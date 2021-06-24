@@ -7,6 +7,6 @@ MarkupSafe==1.1.1
 numpy
 pandas==1.2.3
 scikit-learn
-Wekzeug==1.0.1
+Werkzeug==1.0.1
 pickleshare==0.7.5
 scipy
