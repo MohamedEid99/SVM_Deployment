@@ -1,27 +1,36 @@
-import numpy as np
-from flask import Flask, request, jsonify, render_template
+import pandas as pd
+from flask import Flask, jsonify, request, json,requests
 import pickle
-import itertools
 
+# load model
+model = pickle.load(open('model.pkl','rb'))
+
+# app
 app = Flask(__name__)
-model = pickle.load(open('model.pkl', 'rb'))
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# routes
+@app.route('/', methods=['POST'])
 
-@app.route('/predict',methods=['POST','GET'])
 def predict():
-    '''
-    For rendering results on HTML GUI
-    '''
-    int_features = [int(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
-    prediction = model.predict(final_features)
+    # get data
+    data = request.get_json(force=True)
 
-    output = round(prediction[0], 2)
+    # convert data into dataframe
+    data.update((x, [y]) for x, y in data.items())
+    data_df = pd.DataFrame.from_dict(data)
 
-    return render_template('index.html', prediction_text='This Test is  {}'.format(output))
+    # predictions
+    result = model.predict(data_df)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    # send back to browser
+    output = {'results': int(result[0])}
+
+    # return data
+    return jsonify(results=output)
+
+if __name__ == '__main__':
+    app.run(port = 5000, debug=True)
+    
+
+    
+    
