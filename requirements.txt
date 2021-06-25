@@ -11,4 +11,3 @@ Werkzeug==1.0.1
 pickleshare==0.7.5
 scipy
 requests==2.22.0
-scipy
