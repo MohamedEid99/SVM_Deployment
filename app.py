@@ -1,5 +1,5 @@
 import pandas as pd
-from flask import Flask, jsonify, request, json,requests
+from flask import Flask, jsonify, request
 import pickle
 
 # load model
@@ -9,7 +9,7 @@ model = pickle.load(open('model.pkl','rb'))
 app = Flask(__name__)
 
 # routes
-@app.route('/', methods=['POST','GET'])
+@app.route('/', methods=['POST'])
 
 def predict():
     # get data
@@ -30,7 +30,3 @@ def predict():
 
 if __name__ == '__main__':
     app.run(port = 5000, debug=True)
-    
-
-    
-    
